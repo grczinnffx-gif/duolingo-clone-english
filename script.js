@@ -1,17 +1,6 @@
-const words = [
-  "hello",
-  "good morning",
-  "thank you",
-  "sorry",
-  "apple",
-  "water",
-  "book",
-  "friend",
-  "family",
-  "school"
-];
-
-let currentIndex = parseInt(localStorage.getItem("level")) || 0;
+let level = localStorage.getItem("level") || "beginner";
+let index = parseInt(localStorage.getItem("index")) || 0;
+let words = [];
 
 const speakBtn = document.getElementById("speakBtn");
 const checkBtn = document.getElementById("checkBtn");
@@ -19,33 +8,47 @@ const input = document.getElementById("answerInput");
 const feedback = document.getElementById("feedback");
 const progressText = document.getElementById("progressText");
 
-updateProgress();
+loadLevel();
 
-function speakWord() {
-  const text = words[currentIndex];
-  const utterance = new SpeechSynthesisUtterance(text);
-  utterance.lang = "en-US";
-  speechSynthesis.speak(utterance);
+/* ===== LOAD LEVEL ===== */
+function loadLevel() {
+  fetch(`data/${level}.json`)
+    .then(res => res.json())
+    .then(data => {
+      words = data;
+      updateProgress();
+      speak();
+    })
+    .catch(() => {
+      feedback.textContent = "Error loading level";
+    });
 }
 
-function checkAnswer() {
-  const userAnswer = input.value.trim().toLowerCase();
-  const correctAnswer = words[currentIndex];
+/* ===== SPEAK ===== */
+function speak() {
+  const text = words[index].text;
+  const msg = new SpeechSynthesisUtterance(text);
+  msg.lang = "en-US";
+  speechSynthesis.speak(msg);
+}
 
-  if (userAnswer === correctAnswer) {
+/* ===== CHECK ANSWER ===== */
+function checkAnswer() {
+  const user = input.value.trim().toLowerCase();
+  const correct = words[index].text.toLowerCase();
+
+  if (user === correct) {
     feedback.textContent = "✅ Correct!";
     feedback.style.color = "green";
-
-    currentIndex++;
-    localStorage.setItem("level", currentIndex);
-
+    index++;
     input.value = "";
 
-    if (currentIndex < words.length) {
-      updateProgress();
-      setTimeout(speakWord, 800);
+    if (index >= words.length) {
+      changeLevel();
     } else {
-      feedback.textContent = "🏆 Level completed!";
+      saveProgress();
+      updateProgress();
+      setTimeout(speak, 700);
     }
   } else {
     feedback.textContent = "❌ Try again";
@@ -53,9 +56,33 @@ function checkAnswer() {
   }
 }
 
-function updateProgress() {
-  progressText.textContent = `Word ${currentIndex + 1} of ${words.length}`;
+/* ===== CHANGE LEVEL ===== */
+function changeLevel() {
+  if (level === "beginner") {
+    level = "intermediate";
+  } else if (level === "intermediate") {
+    level = "advanced";
+  } else {
+    feedback.textContent = "🏆 All levels completed!";
+    localStorage.clear();
+    return;
+  }
+
+  index = 0;
+  saveProgress();
+  loadLevel();
 }
 
-speakBtn.addEventListener("click", speakWord);
+/* ===== SAVE ===== */
+function saveProgress() {
+  localStorage.setItem("level", level);
+  localStorage.setItem("index", index);
+}
+
+/* ===== UI ===== */
+function updateProgress() {
+  progressText.textContent = `${level.toUpperCase()} — ${index + 1} / ${words.length}`;
+}
+
+speakBtn.addEventListener("click", speak);
 checkBtn.addEventListener("click", checkAnswer);
