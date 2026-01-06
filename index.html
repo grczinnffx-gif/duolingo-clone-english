@@ -2,36 +2,20 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>English Speaking App</title>
+  <title>English Learning App</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
   <div class="app">
-    <h1>🎧 Listen & Type</h1>
 
-    <div class="card">
-      <button id="speakBtn">🔊 Listen</button>
-
-      <p class="hint">Type what you hear</p>
-
-      <input 
-        type="text" 
-        id="answerInput" 
-        placeholder="Type in English..."
-        autocomplete="off"
-      />
-
-      <button id="checkBtn">Check</button>
-
-      <p id="feedback"></p>
-
-      <div class="progress">
-        <span id="progressText"></span>
-      </div>
+    <div class="top-info">
+      🔥 Points: <span id="points">0</span> |
+      ❤️ Lives: <span id="lives">5</span>
     </div>
-  </div>
 
-  <script src="script.js"></script>
-</body>
-</html>
+    <div class="levels">
+      <span id="lv-beginner">🟢 Beginner</span>
+      <span id="lv-intermediate">⚪ Intermediate</span>
+      <span
+        
