@@ -2,10 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-
-  <!-- 🔥 ISSO RESOLVE O PROBLEMA -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <title>English Learning App</title>
   <link rel="stylesheet" href="style.css">
 </head>
@@ -27,10 +24,13 @@
     <div class="card">
       <h1>🎧 Listen & Speak</h1>
 
-      <button id="speakBtn">🔊 Listen</button>
+      <button id="speakBtn">🔊 Listen (Slow)</button>
       <button id="micBtn">🎙️ Speak</button>
 
-      <p class="hint">Type or speak what you hear</p>
+      <div class="text-box">
+        <p><strong>English:</strong> <span id="englishText">---</span></p>
+        <p><strong>Português:</strong> <span id="portugueseText">---</span></p>
+      </div>
 
       <input
         type="text"
