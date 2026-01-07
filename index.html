@@ -3,27 +3,28 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>English App</title>
+  <title>English Flow</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<div class="screen">
+<div class="app">
+  <h1 id="title"></h1>
 
-  <div class="top">
-    <span class="lives">⚡ <span id="lives">5</span></span>
+  <div class="card">
+    <p id="english" class="en"></p>
+    <p id="portuguese" class="pt hidden"></p>
   </div>
-
-  <h1 id="questionTitle"></h1>
 
   <div class="audio" id="audioBtn">🔊</div>
 
-  <div id="sentence" class="sentence hidden"></div>
+  <input
+    id="input"
+    class="hidden"
+    placeholder="Type what you hear"
+  />
 
-  <div class="choices" id="choices"></div>
-
-  <button id="verifyBtn" disabled>VERIFY</button>
-
+  <button id="actionBtn">CONTINUE</button>
 </div>
 
 <script src="script.js"></script>
