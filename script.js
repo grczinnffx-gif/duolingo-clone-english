@@ -1,86 +1,61 @@
-let index = 0;
+const questionEl = document.getElementById("question");
+const sentenceEl = document.getElementById("sentence");
+const optionsEl = document.getElementById("options");
+const checkBtn = document.getElementById("checkBtn");
+const audioBtn = document.getElementById("audioBtn");
+
 let lives = 5;
 let selected = null;
-let data = [];
 
-const questionTitle = document.getElementById("questionTitle");
-const optionsBox = document.getElementById("options");
-const feedback = document.getElementById("feedback");
-const micBtn = document.getElementById("micBtn");
-const sentenceBox = document.getElementById("sentenceBox");
-
-fetch("data/beginner.json")
-  .then(r => r.json())
-  .then(json => {
-    data = shuffle(json);
-    loadQuestion();
-  });
-
-function shuffle(arr) {
-  return arr.sort(() => Math.random() - 0.5);
-}
+const question = {
+  audio: "hello",
+  text: "hello",
+  options: ["hello", "hi", "my", "me"],
+  answer: "hello"
+};
 
 function playAudio() {
-  const q = data[index];
-  const msg = new SpeechSynthesisUtterance(q.audio || q.text);
+  const msg = new SpeechSynthesisUtterance(question.audio);
   msg.lang = "en-US";
   msg.rate = 0.5;
+  speechSynthesis.cancel();
   speechSynthesis.speak(msg);
 }
 
 function loadQuestion() {
-  const q = data[index];
-  optionsBox.innerHTML = "";
-  feedback.textContent = "";
-  micBtn.classList.add("hidden");
-  sentenceBox.textContent = "";
+  sentenceEl.textContent = "Listen carefully";
+  optionsEl.innerHTML = "";
+  selected = null;
+  checkBtn.classList.remove("active");
+  checkBtn.disabled = true;
 
-  if (q.type === "listen_choice") {
-    questionTitle.textContent = "O que você escuta?";
-    q.options.forEach(opt => createOption(opt));
-    playAudio();
-  }
+  question.options.forEach(opt => {
+    const div = document.createElement("div");
+    div.className = "option";
+    div.textContent = opt;
+    div.onclick = () => {
+      document.querySelectorAll(".option").forEach(o => o.classList.remove("selected"));
+      div.classList.add("selected");
+      selected = opt;
+      checkBtn.classList.add("active");
+      checkBtn.disabled = false;
+    };
+    optionsEl.appendChild(div);
+  });
 
-  if (q.type === "listen_word") {
-    questionTitle.textContent = "Toque no que escutar:";
-    q.options.forEach(opt => createOption(opt));
-    playAudio();
-  }
-
-  if (q.type === "speak_sentence") {
-    questionTitle.textContent = "Fale esta frase:";
-    sentenceBox.textContent = q.text;
-    micBtn.classList.remove("hidden");
-    playAudio();
-  }
+  playAudio();
 }
 
-function createOption(text) {
-  const div = document.createElement("div");
-  div.className = "option";
-  div.textContent = text;
-  div.onclick = () => {
-    document.querySelectorAll(".option").forEach(o => o.classList.remove("selected"));
-    div.classList.add("selected");
-    selected = text;
-  };
-  optionsBox.appendChild(div);
-}
+audioBtn.onclick = playAudio;
 
-document.getElementById("checkBtn").onclick = () => {
-  const q = data[index];
-
-  if (q.answer && selected === q.answer) {
-    feedback.textContent = "✅ Correto!";
-    index++;
-    setTimeout(loadQuestion, 800);
-  } else if (!q.answer) {
-    feedback.textContent = "🎤 Falado!";
-    index++;
-    setTimeout(loadQuestion, 800);
+checkBtn.onclick = () => {
+  if (selected === question.answer) {
+    sentenceEl.textContent = "✅ Correct!";
   } else {
     lives--;
-    feedback.textContent = "❌ Tente novamente";
-    if (lives <= 0) alert("Sem vidas!");
+    document.getElementById("lives").textContent = lives;
+    sentenceEl.textContent = "❌ Try again";
   }
 };
+
+loadQuestion();
