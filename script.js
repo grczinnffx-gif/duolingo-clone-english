@@ -1,8 +1,10 @@
 let level = localStorage.getItem("level") || "beginner";
-let index = parseInt(localStorage.getItem("index")) || 0;
+let index = 0; // sempre começa do 0 porque agora é aleatório
 let points = parseInt(localStorage.getItem("points")) || 0;
 let lives = parseInt(localStorage.getItem("lives")) || 5;
+
 let words = [];
+let shuffledWords = [];
 
 const speakBtn = document.getElementById("speakBtn");
 const micBtn = document.getElementById("micBtn");
@@ -17,7 +19,7 @@ const livesText = document.getElementById("lives");
 const englishText = document.getElementById("englishText");
 const portugueseText = document.getElementById("portugueseText");
 
-/* 🔤 DICIONÁRIO SIMPLES (PODE CRESCER PARA 35K+) */
+/* 🔤 DICIONÁRIO BÁSICO (pode crescer para 35k+) */
 const dictionary = {
   "hello": "olá",
   "good morning": "bom dia",
@@ -30,40 +32,56 @@ const dictionary = {
   "family": "família",
   "school": "escola",
   "i am learning english": "eu estou aprendendo inglês",
-  "can you help me": "você pode me ajudar"
+  "can you help me": "você pode me ajudar",
+  "how are you": "como você está",
+  "what is your name": "qual é o seu nome",
+  "i like to study english": "eu gosto de estudar inglês"
 };
 
 loadLevel();
 
-/* ===== LOAD LEVEL ===== */
+/* ========= LOAD LEVEL ========= */
 function loadLevel() {
   fetch(`data/${level}.json`)
     .then(res => res.json())
     .then(data => {
-      words = data;
+      words = data.map(item => item.text);
+      shuffledWords = shuffleArray([...words]);
+      index = 0;
       updateUI();
       speak();
     });
 }
 
-/* ===== SPEAK SLOW ===== */
-function speak() {
-  const text = words[index].text.toLowerCase();
+/* ========= SHUFFLE (ALEATÓRIO) ========= */
+function shuffleArray(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
 
-  englishText.textContent = words[index].text;
+/* ========= SPEAK (DEVAGAR + MOSTRAR TEXTO) ========= */
+function speak() {
+  const text = shuffledWords[index].toLowerCase();
+
+  englishText.textContent = shuffledWords[index];
   portugueseText.textContent = dictionary[text] || "tradução em breve";
 
-  const msg = new SpeechSynthesisUtterance(words[index].text);
+  const msg = new SpeechSynthesisUtterance(shuffledWords[index]);
   msg.lang = "en-US";
-  msg.rate = 0.5;   // 🔥 MAIS DEVAGAR
+  msg.rate = 0.5; // 🔥 MAIS DEVAGAR
   msg.pitch = 1;
+
+  speechSynthesis.cancel();
   speechSynthesis.speak(msg);
 }
 
-/* ===== CHECK ANSWER ===== */
+/* ========= CHECK ANSWER ========= */
 function checkAnswer() {
   const user = input.value.trim().toLowerCase();
-  const correct = words[index].text.toLowerCase();
+  const correct = shuffledWords[index].toLowerCase();
 
   if (user === correct) {
     feedback.textContent = "✅ Correct!";
@@ -72,7 +90,7 @@ function checkAnswer() {
     index++;
     input.value = "";
 
-    if (index >= words.length) {
+    if (index >= shuffledWords.length) {
       changeLevel();
     } else {
       save();
@@ -89,13 +107,15 @@ function checkAnswer() {
       alert("💔 No lives left. Resetting level.");
       lives = 5;
       index = 0;
+      shuffledWords = shuffleArray([...words]);
       save();
-      location.reload();
+      updateUI();
+      speak();
     }
   }
 }
 
-/* ===== CHANGE LEVEL ===== */
+/* ========= CHANGE LEVEL ========= */
 function changeLevel() {
   if (level === "beginner") level = "intermediate";
   else if (level === "intermediate") level = "advanced";
@@ -110,17 +130,16 @@ function changeLevel() {
   loadLevel();
 }
 
-/* ===== SAVE ===== */
+/* ========= SAVE ========= */
 function save() {
   localStorage.setItem("level", level);
-  localStorage.setItem("index", index);
   localStorage.setItem("points", points);
   localStorage.setItem("lives", lives);
 }
 
-/* ===== UI ===== */
+/* ========= UI ========= */
 function updateUI() {
-  progressText.textContent = `${level.toUpperCase()} — ${index + 1} / ${words.length}`;
+  progressText.textContent = `${level.toUpperCase()} — ${index + 1} / ${shuffledWords.length}`;
   pointsText.textContent = points;
   livesText.textContent = lives;
 
@@ -129,7 +148,7 @@ function updateUI() {
   document.getElementById("lv-advanced").style.opacity = level === "advanced" ? "1" : "0.4";
 }
 
-/* ===== RESET ===== */
+/* ========= RESET ========= */
 resetBtn.onclick = () => {
   if (confirm("Reset all progress?")) {
     localStorage.clear();
@@ -137,11 +156,11 @@ resetBtn.onclick = () => {
   }
 };
 
-/* ===== EVENTS ===== */
+/* ========= EVENTS ========= */
 speakBtn.onclick = speak;
 checkBtn.onclick = checkAnswer;
 
-/* ===== MICROPHONE ===== */
+/* ========= MICROPHONE ========= */
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 const recognition = new SpeechRecognition();
 recognition.lang = "en-US";
