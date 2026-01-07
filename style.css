@@ -1,6 +1,6 @@
 body {
   margin: 0;
-  background: #0b1220;
+  background: #0f172a;
   font-family: system-ui;
   color: white;
 }
@@ -22,7 +22,6 @@ h1 {
   background: #020617;
   border-radius: 18px;
   padding: 20px;
-  text-align: center;
   margin-bottom: 20px;
 }
 
@@ -33,38 +32,34 @@ h1 {
 .pt {
   font-size: 18px;
   opacity: 0.7;
-  margin-top: 10px;
-}
-
-.audio {
-  width: 90px;
-  height: 90px;
-  background: #3abef9;
-  border-radius: 20px;
-  font-size: 36px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 20px auto;
-}
-
-input {
-  padding: 14px;
-  border-radius: 14px;
-  border: none;
-  font-size: 18px;
-  margin-bottom: 20px;
+  margin-top: 8px;
 }
 
 button {
   height: 52px;
   border-radius: 16px;
   border: none;
-  background: #22c55e;
-  color: white;
   font-size: 18px;
+  margin-bottom: 12px;
 }
 
-.hidden {
-  display: none;
+#speakBtn {
+  background: #3abef9;
+}
+
+#nextBtn {
+  background: #22c55e;
+}
+
+input {
+  height: 48px;
+  border-radius: 14px;
+  border: none;
+  padding: 0 14px;
+  font-size: 16px;
+  margin-bottom: 12px;
+}
+
+#feedback {
+  min-height: 24px;
 }
