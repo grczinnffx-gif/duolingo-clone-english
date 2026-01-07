@@ -1,33 +1,31 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>English Learning App</title>
+  <title>English App</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<div class="app">
+<div class="container">
 
-  <div class="top-bar">
-    <div id="progress"></div>
+  <div class="top">
+    <div class="progress">
+      <div class="bar"></div>
+    </div>
     <div class="lives">⚡ <span id="lives">5</span></div>
   </div>
 
-  <h2 id="questionTitle"></h2>
+  <h2 id="question">What do you hear?</h2>
 
-  <div id="audioBox" onclick="playAudio()">🔊</div>
+  <div class="audio-btn" id="audioBtn">🔊</div>
 
-  <div id="sentenceBox"></div>
+  <div class="sentence" id="sentence">---</div>
 
-  <div id="options"></div>
+  <div class="options" id="options"></div>
 
-  <button id="micBtn" class="hidden">🎙️ TOQUE PARA FALAR</button>
-
-  <button id="checkBtn">VERIFICAR</button>
-
-  <p id="feedback"></p>
+  <button class="check" id="checkBtn" disabled>VERIFY</button>
 
 </div>
 
