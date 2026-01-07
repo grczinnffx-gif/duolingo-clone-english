@@ -55,7 +55,7 @@ function speak() {
 
   const msg = new SpeechSynthesisUtterance(words[index].text);
   msg.lang = "en-US";
-  msg.rate = 0.7;   // 🔥 MAIS DEVAGAR
+  msg.rate = 0.5;   // 🔥 MAIS DEVAGAR
   msg.pitch = 1;
   speechSynthesis.speak(msg);
 }
