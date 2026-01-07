@@ -1,31 +1,26 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>English App</title>
+  <title>Listen Practice</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<div class="container">
+<div class="screen">
 
   <div class="top">
-    <div class="progress">
-      <div class="bar"></div>
-    </div>
-    <div class="lives">⚡ <span id="lives">5</span></div>
+    <span class="lives">⚡ 5</span>
   </div>
 
-  <h2 id="question">What do you hear?</h2>
+  <h1>What do you hear?</h1>
 
-  <div class="audio-btn" id="audioBtn">🔊</div>
+  <div class="audio" id="audioBtn">🔊</div>
 
-  <div class="sentence" id="sentence">---</div>
+  <div class="choices" id="choices"></div>
 
-  <div class="options" id="options"></div>
-
-  <button class="check" id="checkBtn" disabled>VERIFY</button>
+  <button class="verify" id="verifyBtn" disabled>VERIFY</button>
 
 </div>
 
