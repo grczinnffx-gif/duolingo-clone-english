@@ -14,6 +14,24 @@ const feedback = document.getElementById("feedback");
 const progressText = document.getElementById("progressText");
 const pointsText = document.getElementById("points");
 const livesText = document.getElementById("lives");
+const englishText = document.getElementById("englishText");
+const portugueseText = document.getElementById("portugueseText");
+
+/* 🔤 DICIONÁRIO SIMPLES (PODE CRESCER PARA 35K+) */
+const dictionary = {
+  "hello": "olá",
+  "good morning": "bom dia",
+  "thank you": "obrigado",
+  "sorry": "desculpa",
+  "apple": "maçã",
+  "water": "água",
+  "book": "livro",
+  "friend": "amigo",
+  "family": "família",
+  "school": "escola",
+  "i am learning english": "eu estou aprendendo inglês",
+  "can you help me": "você pode me ajudar"
+};
 
 loadLevel();
 
@@ -28,10 +46,17 @@ function loadLevel() {
     });
 }
 
-/* ===== SPEAK ===== */
+/* ===== SPEAK SLOW ===== */
 function speak() {
+  const text = words[index].text.toLowerCase();
+
+  englishText.textContent = words[index].text;
+  portugueseText.textContent = dictionary[text] || "tradução em breve";
+
   const msg = new SpeechSynthesisUtterance(words[index].text);
   msg.lang = "en-US";
+  msg.rate = 0.7;   // 🔥 MAIS DEVAGAR
+  msg.pitch = 1;
   speechSynthesis.speak(msg);
 }
 
@@ -52,7 +77,7 @@ function checkAnswer() {
     } else {
       save();
       updateUI();
-      setTimeout(speak, 700);
+      setTimeout(speak, 800);
     }
   } else {
     feedback.textContent = "❌ Try again";
