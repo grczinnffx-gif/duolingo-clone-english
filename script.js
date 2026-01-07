@@ -1,30 +1,54 @@
 const audioBtn = document.getElementById("audioBtn");
 const choicesBox = document.getElementById("choices");
 const verifyBtn = document.getElementById("verifyBtn");
+const livesEl = document.querySelector(".lives");
 
-const question = {
-  audio: "hello",
-  options: ["hello", "hi", "my", "me"],
-  answer: "hello"
-};
-
+let lives = 5;
 let selected = null;
+let index = 0;
 
-function speak() {
-  const msg = new SpeechSynthesisUtterance(question.audio);
+/* 🔥 LISTA DE PERGUNTAS (DEPOIS VAI PARA JSON) */
+const questions = [
+  {
+    audio: "hello",
+    options: ["hello", "hi", "my", "me"],
+    answer: "hello"
+  },
+  {
+    audio: "thank you",
+    options: ["thank you", "coffee", "passport", "hotel"],
+    answer: "thank you"
+  },
+  {
+    audio: "good morning",
+    options: ["good night", "good morning", "good afternoon", "hello"],
+    answer: "good morning"
+  },
+  {
+    audio: "my name is john",
+    options: ["my name is john", "nice to meet you", "how are you", "thank you"],
+    answer: "my name is john"
+  }
+];
+
+/* 🔊 FALAR */
+function speak(text) {
+  const msg = new SpeechSynthesisUtterance(text);
   msg.lang = "en-US";
   msg.rate = 0.5;
   speechSynthesis.cancel();
   speechSynthesis.speak(msg);
 }
 
-function load() {
-  choicesBox.innerHTML = "";
+/* 🔁 CARREGAR QUESTÃO */
+function loadQuestion() {
+  const q = questions[index];
   selected = null;
   verifyBtn.disabled = true;
   verifyBtn.classList.remove("active");
+  choicesBox.innerHTML = "";
 
-  question.options.forEach(opt => {
+  q.options.forEach(opt => {
     const div = document.createElement("div");
     div.className = "choice";
     div.textContent = opt;
@@ -38,17 +62,41 @@ function load() {
     choicesBox.appendChild(div);
   });
 
-  speak();
+  speak(q.audio);
 }
 
+/* ✅ VERIFICAR */
 verifyBtn.onclick = () => {
-  if (selected === question.answer) {
-    alert("Correct!");
+  const q = questions[index];
+
+  if (!selected) return;
+
+  if (selected === q.answer) {
+    index++;
+
+    if (index >= questions.length) {
+      alert("🎉 Lesson completed!");
+      index = 0;
+    }
+
+    loadQuestion();
   } else {
-    alert("Try again");
+    lives--;
+    livesEl.innerHTML = `⚡ ${lives}`;
+
+    if (lives <= 0) {
+      alert("💔 No lives left. Restarting lesson.");
+      lives = 5;
+      index = 0;
+      livesEl.innerHTML = `⚡ ${lives}`;
+    }
   }
 };
 
-audioBtn.onclick = speak;
+/* 🔊 BOTÃO DE ÁUDIO */
+audioBtn.onclick = () => {
+  speak(questions[index].audio);
+};
 
-load();
+/* 🚀 START */
+loadQuestion();
