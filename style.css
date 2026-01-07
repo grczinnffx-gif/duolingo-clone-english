@@ -36,9 +36,13 @@ body {
   text-align: center;
 }
 
-h1 {
-  color: #2c3e50;
-  margin-bottom: 10px;
+.text-box {
+  background: #f1f5ff;
+  padding: 10px;
+  border-radius: 10px;
+  margin: 15px 0;
+  text-align: left;
+  font-size: 14px;
 }
 
 button {
@@ -51,10 +55,6 @@ button {
   font-size: 16px;
   cursor: pointer;
   margin-top: 10px;
-}
-
-button:hover {
-  opacity: 0.9;
 }
 
 button.reset {
@@ -70,17 +70,7 @@ input {
   margin-top: 10px;
 }
 
-.hint {
-  color: #777;
-  margin: 10px 0;
-}
-
 #feedback {
   font-weight: bold;
   margin-top: 15px;
-}
-
-#progressText {
-  margin-top: 10px;
-  color: #555;
 }
