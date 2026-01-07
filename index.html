@@ -3,19 +3,27 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tap the word</title>
+  <title>English App</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <div class="screen">
-  <h1>Tap what you hear</h1>
+
+  <div class="top">
+    <span class="lives">⚡ <span id="lives">5</span></span>
+  </div>
+
+  <h1 id="questionTitle"></h1>
 
   <div class="audio" id="audioBtn">🔊</div>
+
+  <div id="sentence" class="sentence hidden"></div>
 
   <div class="choices" id="choices"></div>
 
   <button id="verifyBtn" disabled>VERIFY</button>
+
 </div>
 
 <script src="script.js"></script>
