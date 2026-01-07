@@ -1,23 +1,27 @@
-const title = document.getElementById("title");
+const stepTitle = document.getElementById("stepTitle");
 const english = document.getElementById("english");
 const portuguese = document.getElementById("portuguese");
-const audioBtn = document.getElementById("audioBtn");
-const input = document.getElementById("input");
-const actionBtn = document.getElementById("actionBtn");
+const speakBtn = document.getElementById("speakBtn");
+const answerInput = document.getElementById("answerInput");
+const nextBtn = document.getElementById("nextBtn");
+const feedback = document.getElementById("feedback");
 
+/* CONTEÚDO */
 const lessons = [
   {
-    type: "listen_understand",
-    en: "I need a coffee",
-    pt: "Eu preciso de um café"
+    en: "I am learning English",
+    pt: "Eu estou aprendendo inglês",
+    answer: "i am learning english"
   },
   {
-    type: "listen_type",
-    en: "Good morning"
+    en: "Where is the bathroom?",
+    pt: "Onde fica o banheiro?",
+    answer: "where is the bathroom"
   },
   {
-    type: "read_speak",
-    en: "Nice to meet you"
+    en: "I would like a coffee",
+    pt: "Eu gostaria de um café",
+    answer: "i would like a coffee"
   }
 ];
 
@@ -33,43 +37,38 @@ function speak(text) {
 
 function loadLesson() {
   const l = lessons[index];
-  input.value = "";
-  input.classList.add("hidden");
-  portuguese.classList.add("hidden");
-
-  if (l.type === "listen_understand") {
-    title.textContent = "Listen and understand";
-    english.textContent = l.en;
-    portuguese.textContent = l.pt;
-    portuguese.classList.remove("hidden");
-    speak(l.en);
-  }
-
-  if (l.type === "listen_type") {
-    title.textContent = "Listen and type";
-    english.textContent = "••••••••";
-    input.classList.remove("hidden");
-    speak(l.en);
-  }
-
-  if (l.type === "read_speak") {
-    title.textContent = "Read and speak";
-    english.textContent = l.en;
-    speak(l.en);
-  }
+  stepTitle.textContent = "Listen and understand";
+  english.textContent = l.en;
+  portuguese.textContent = l.pt;
+  answerInput.value = "";
+  feedback.textContent = "";
+  speak(l.en);
 }
 
-actionBtn.onclick = () => {
-  index++;
-  if (index >= lessons.length) {
-    alert("🎉 Session finished!");
-    index = 0;
-  }
-  loadLesson();
+speakBtn.onclick = () => {
+  speak(lessons[index].en);
 };
 
-audioBtn.onclick = () => {
-  speak(lessons[index].en);
+nextBtn.onclick = () => {
+  const userAnswer = answerInput.value.trim().toLowerCase();
+  const correct = lessons[index].answer;
+
+  if (!userAnswer) {
+    feedback.textContent = "Type something first.";
+    return;
+  }
+
+  if (userAnswer === correct) {
+    feedback.textContent = "✅ Correct!";
+    index++;
+    if (index >= lessons.length) {
+      alert("🎉 Training finished!");
+      index = 0;
+    }
+    setTimeout(loadLesson, 800);
+  } else {
+    feedback.textContent = "❌ Try again.";
+  }
 };
 
 loadLesson();
