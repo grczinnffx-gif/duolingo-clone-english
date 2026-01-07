@@ -1,20 +1,16 @@
-const questionEl = document.getElementById("question");
-const sentenceEl = document.getElementById("sentence");
-const optionsEl = document.getElementById("options");
-const checkBtn = document.getElementById("checkBtn");
 const audioBtn = document.getElementById("audioBtn");
-
-let lives = 5;
-let selected = null;
+const choicesBox = document.getElementById("choices");
+const verifyBtn = document.getElementById("verifyBtn");
 
 const question = {
   audio: "hello",
-  text: "hello",
   options: ["hello", "hi", "my", "me"],
   answer: "hello"
 };
 
-function playAudio() {
+let selected = null;
+
+function speak() {
   const msg = new SpeechSynthesisUtterance(question.audio);
   msg.lang = "en-US";
   msg.rate = 0.5;
@@ -22,40 +18,37 @@ function playAudio() {
   speechSynthesis.speak(msg);
 }
 
-function loadQuestion() {
-  sentenceEl.textContent = "Listen carefully";
-  optionsEl.innerHTML = "";
+function load() {
+  choicesBox.innerHTML = "";
   selected = null;
-  checkBtn.classList.remove("active");
-  checkBtn.disabled = true;
+  verifyBtn.disabled = true;
+  verifyBtn.classList.remove("active");
 
   question.options.forEach(opt => {
     const div = document.createElement("div");
-    div.className = "option";
+    div.className = "choice";
     div.textContent = opt;
     div.onclick = () => {
-      document.querySelectorAll(".option").forEach(o => o.classList.remove("selected"));
+      document.querySelectorAll(".choice").forEach(c => c.classList.remove("selected"));
       div.classList.add("selected");
       selected = opt;
-      checkBtn.classList.add("active");
-      checkBtn.disabled = false;
+      verifyBtn.disabled = false;
+      verifyBtn.classList.add("active");
     };
-    optionsEl.appendChild(div);
+    choicesBox.appendChild(div);
   });
 
-  playAudio();
+  speak();
 }
 
-audioBtn.onclick = playAudio;
-
-checkBtn.onclick = () => {
+verifyBtn.onclick = () => {
   if (selected === question.answer) {
-    sentenceEl.textContent = "✅ Correct!";
+    alert("Correct!");
   } else {
-    lives--;
-    document.getElementById("lives").textContent = lives;
-    sentenceEl.textContent = "❌ Try again";
+    alert("Try again");
   }
 };
 
-loadQuestion();
+audioBtn.onclick = speak;
+
+load();
