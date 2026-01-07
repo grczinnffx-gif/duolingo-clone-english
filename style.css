@@ -1,76 +1,89 @@
-* {
-  box-sizing: border-box;
+body {
+  margin: 0;
+  background: #0f172a;
+  color: white;
   font-family: Arial, Helvetica, sans-serif;
 }
 
-body {
-  background: #f2f7ff;
-  margin: 0;
-}
-
 .app {
-  width: 100%;
   max-width: 420px;
+  margin: auto;
   padding: 20px;
-  margin: 40px auto;
 }
 
-.top-info {
-  text-align: center;
-  margin-bottom: 10px;
-  font-weight: bold;
-}
-
-.levels {
+.top-bar {
   display: flex;
-  justify-content: space-around;
-  margin-bottom: 15px;
-  font-weight: bold;
+  justify-content: space-between;
+  margin-bottom: 20px;
 }
 
-.card {
-  background: white;
-  padding: 25px;
+#progress {
+  width: 70%;
+  height: 8px;
+  background: #1e293b;
+  border-radius: 5px;
+}
+
+#progress::after {
+  content: "";
+  display: block;
+  height: 100%;
+  width: 30%;
+  background: #22c55e;
+  border-radius: 5px;
+}
+
+#audioBox {
+  width: 100px;
+  height: 100px;
+  background: #38bdf8;
   border-radius: 20px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 40px;
+  margin: 20px auto;
 }
 
-.text-box {
-  background: #f1f5ff;
-  padding: 10px;
-  border-radius: 10px;
-  margin: 15px 0;
-  text-align: left;
-  font-size: 14px;
+#options {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.option {
+  background: #020617;
+  border: 2px solid #1e293b;
+  border-radius: 15px;
+  padding: 20px;
+  text-align: center;
+  font-size: 22px;
+}
+
+.option.selected {
+  border-color: #38bdf8;
 }
 
 button {
   width: 100%;
-  background: #4caf50;
+  padding: 15px;
+  margin-top: 20px;
+  background: #1e293b;
   color: white;
   border: none;
-  padding: 12px;
-  border-radius: 12px;
-  font-size: 16px;
-  cursor: pointer;
-  margin-top: 10px;
+  border-radius: 15px;
+  font-size: 18px;
 }
 
-button.reset {
-  background: #f44336;
+.hidden {
+  display: none;
 }
 
-input {
-  width: 100%;
-  padding: 12px;
-  border-radius: 10px;
-  border: 1px solid #ccc;
-  font-size: 16px;
-  margin-top: 10px;
-}
-
-#feedback {
-  font-weight: bold;
-  margin-top: 15px;
+#sentenceBox {
+  background: #020617;
+  padding: 15px;
+  border-radius: 15px;
+  margin-bottom: 20px;
+  text-align: center;
+  font-size: 20px;
 }
